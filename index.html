@@ -22,7 +22,7 @@
     var cat = document.getElementById('catSprite');
     var mouseX = 0, mouseY = 0;
     var catX = 0, catY = 0;
-    var speed = 0.01; // Speed of the movement
+    var speed = 1; // Constant speed of the movement
 
     document.addEventListener('mousemove', function(e) {
       mouseX = e.clientX;
@@ -30,14 +30,15 @@
     });
 
     function followMouse() {
-      var dx = (mouseX - catX);
-      var dy = (mouseY - catY);
+      var dx = mouseX - catX;
+      var dy = mouseY - catY;
       var distance = Math.sqrt(dx * dx + dy * dy);
 
-      // Move the cat only if the distance is more than 20px
-      if (distance > 50) {
-        catX += dx * speed;
-        catY += dy * speed;
+      // Normalize the vector and move the cat at a constant speed
+      if (distance > 20) {
+        var angle = Math.atan2(dy, dx);
+        catX += Math.cos(angle) * speed;
+        catY += Math.sin(angle) * speed;
       }
 
       cat.style.left = catX + 'px';
