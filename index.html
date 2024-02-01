@@ -1,9 +1,32 @@
 <!DOCTYPE html>
-<Body>
-  <p>
-    Hello! Portfolio Coming Soon :)
-  </p>
-  <p>
-    See my GitHub: <a href="https://github.com/williammunnich">William Munnich's GitHub</a>
-  </p>
-</Body>
+<html>
+<head>
+  <style>
+    #catSprite {
+      position: absolute;
+      pointer-events: none; /* This ensures the image doesn't interfere with mouse events */
+      width: 50px; /* Adjust size as needed */
+      height: auto;
+      z-index: 1000;
+    }
+  </style>
+</head>
+<body>
+  <p>Hello! Portfolio Coming Soon :)</p>
+  <p>See my GitHub: <a href="https://github.com/williammunnich">William Munnich's GitHub</a></p>
+
+  <!-- Add your cat sprite image here -->
+  <img src="black_cat_black_and_white.svg" id="catSprite" alt="Cat Sprite">
+
+  <script>
+    var cat = document.getElementById('catSprite');
+
+    document.addEventListener('mousemove', function(e) {
+      var x = e.clientX;
+      var y = e.clientY;
+      cat.style.left = x + 'px';
+      cat.style.top = y + 'px';
+    });
+  </script>
+</body>
+</html>
