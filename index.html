@@ -4,7 +4,7 @@
   <style>
     #catSprite {
       position: absolute;
-      pointer-events: none; /* This ensures the image doesn't interfere with mouse events */
+      pointer-events: none;
       width: 50px; /* Adjust size as needed */
       height: auto;
       z-index: 1000;
@@ -20,13 +20,33 @@
 
   <script>
     var cat = document.getElementById('catSprite');
+    var mouseX = 0, mouseY = 0;
+    var catX = 0, catY = 0;
+    var speed = 0.05; // Speed of the movement
 
     document.addEventListener('mousemove', function(e) {
-      var x = e.clientX;
-      var y = e.clientY;
-      cat.style.left = x + 'px';
-      cat.style.top = y + 'px';
+      mouseX = e.clientX;
+      mouseY = e.clientY;
     });
+
+    function followMouse() {
+      var dx = (mouseX - catX);
+      var dy = (mouseY - catY);
+      var distance = Math.sqrt(dx * dx + dy * dy);
+
+      // Move the cat only if the distance is more than 20px
+      if (distance > 20) {
+        catX += dx * speed;
+        catY += dy * speed;
+      }
+
+      cat.style.left = catX + 'px';
+      cat.style.top = catY + 'px';
+
+      requestAnimationFrame(followMouse);
+    }
+
+    followMouse();
   </script>
 </body>
 </html>
