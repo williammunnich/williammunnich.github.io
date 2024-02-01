@@ -30,12 +30,12 @@
     });
 
     function followMouse() {
-      var dx = mouseX - catX;
-      var dy = mouseY - catY;
+      var dx = mouseX - catX - cat.width / 2;
+      var dy = mouseY - catY - cat.height / 2;
       var distance = Math.sqrt(dx * dx + dy * dy);
 
-      // Normalize the vector and move the cat at a constant speed
-      if (distance > 20) {
+      // Move the cat only if it is more than 50 pixels away from the mouse
+      if (distance > 50) {
         var angle = Math.atan2(dy, dx);
         catX += Math.cos(angle) * speed;
         catY += Math.sin(angle) * speed;
