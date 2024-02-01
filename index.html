@@ -8,6 +8,14 @@
       width: 50px; /* Adjust size as needed */
       height: auto;
       z-index: 1000;
+      transform-origin: center; /* Set rotation origin to the center of the sprite */
+    }
+
+    /* Jiggle animation */
+    @keyframes jiggle {
+      0%, 100% { transform: rotate(0deg); }
+      25% { transform: rotate(5deg); }
+      75% { transform: rotate(-5deg); }
     }
   </style>
 </head>
@@ -23,10 +31,15 @@
     var mouseX = 0, mouseY = 0;
     var catX = 0, catY = 0;
     var speed = 1; // Constant speed of the movement
+    var isMoving = false;
+    var jiggleInterval = 7000; // Interval for jiggle in milliseconds
+    var lastMoveTime = Date.now();
 
     document.addEventListener('mousemove', function(e) {
       mouseX = e.clientX;
       mouseY = e.clientY;
+      lastMoveTime = Date.now();
+      isMoving = true;
     });
 
     function followMouse() {
@@ -39,6 +52,9 @@
         var angle = Math.atan2(dy, dx);
         catX += Math.cos(angle) * speed;
         catY += Math.sin(angle) * speed;
+        isMoving = true;
+      } else {
+        isMoving = false;
       }
 
       cat.style.left = catX + 'px';
@@ -47,7 +63,19 @@
       requestAnimationFrame(followMouse);
     }
 
+    function jiggleCat() {
+      if (!isMoving && Date.now() - lastMoveTime >= jiggleInterval) {
+        cat.style.animation = 'jiggle 1s';
+        lastMoveTime = Date.now();
+        setTimeout(function() {
+          cat.style.animation = 'none';
+        }, 1000); // Reset animation after 1 second
+      }
+      requestAnimationFrame(jiggleCat);
+    }
+
     followMouse();
+    jiggleCat();
   </script>
 </body>
 </html>
