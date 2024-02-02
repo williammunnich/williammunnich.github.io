@@ -1,17 +1,23 @@
 import React, { useState, useEffect } from 'react';
-import './App.css'; // Assuming you move the CSS into App.css
+import { FC } from 'react';
+import './style.css'; // Assuming you move the CSS into App.css
 
-function CatSprite() {
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const [catPosition, setCatPosition] = useState({ x: 0, y: 0 });
-  const [isMoving, setIsMoving] = useState(false);
-  const speed = 1;
-  const jiggleInterval = 7000;
-  let lastMoveTime = Date.now();
+interface Position {
+  x: number;
+  y: number;
+}
+
+const CatSprite: React.FC = () => {
+  const [mousePosition, setMousePosition] = useState<Position>({ x: 0, y: 0 });
+  const [catPosition, setCatPosition] = useState<Position>({ x: 0, y: 0 });
+  const [isMoving, setIsMoving] = useState<boolean>(false);
+  const speed: number = 1;
+  const jiggleInterval: number = 7000;
+  let lastMoveTime: number = Date.now();
 
   // Track mouse movement
   useEffect(() => {
-    const handleMouseMove = (e) => {
+    const handleMouseMove = (e: MouseEvent) => {
       setMousePosition({ x: e.clientX, y: e.clientY });
       lastMoveTime = Date.now();
       setIsMoving(true);
@@ -20,7 +26,10 @@ function CatSprite() {
     document.addEventListener('mousemove', handleMouseMove);
 
     return () => {
-      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener(
+        'mousemove',
+        handleMouseMove as unknown as (this: Document, ev: MouseEvent) => any
+      );
     };
   }, []);
 
@@ -28,9 +37,9 @@ function CatSprite() {
   useEffect(() => {
     const followMouse = () => {
       requestAnimationFrame(() => {
-        const dx = mousePosition.x - catPosition.x;
-        const dy = mousePosition.y - catPosition.y;
-        const distance = Math.sqrt(dx * dx + dy * dy);
+        const dx: number = mousePosition.x - catPosition.x;
+        const dy: number = mousePosition.y - catPosition.y;
+        const distance: number = Math.sqrt(dx * dx + dy * dy);
 
         if (distance > 50) {
           setCatPosition({
@@ -51,7 +60,7 @@ function CatSprite() {
   useEffect(() => {
     const interval = setInterval(() => {
       if (!isMoving && Date.now() - lastMoveTime >= jiggleInterval) {
-        const catElement = document.getElementById('catSprite');
+        const catElement = document.getElementById('catSprite') as HTMLElement;
         catElement.style.animation = 'jiggle 1s';
 
         setTimeout(() => {
@@ -80,16 +89,19 @@ function CatSprite() {
       }}
     />
   );
-}
+};
 
-function App() {
+export const App: FC<{ name: string }> = ({ name }) => {
   return (
     <div>
       <p>Hello! Portfolio Coming Soon :)</p>
-      <p>See my GitHub: <a href="https://github.com/williammunnich">William Munnich's GitHub</a></p>
+      <p>
+        See my GitHub:{' '}
+        <a href="https://github.com/williammunnich">William Munnich's GitHub</a>
+      </p>
       <CatSprite />
     </div>
   );
-}
+};
 
 export default App;
