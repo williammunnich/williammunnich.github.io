@@ -77,7 +77,7 @@ const CatSprite: React.FC = () => {
 
   return (
     <img
-      src="black_cat_black_and_white.svg"
+      src="cat.svg"
       id="catSprite"
       alt="Cat Sprite"
       style={{
